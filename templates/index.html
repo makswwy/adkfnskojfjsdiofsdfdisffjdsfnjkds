@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ADMIN MANAGER — {{ page_title }}</title>
+    <style>
+        :root {
+            --bg: #0c1014;
+            --panel: #12181f;
+            --panel-soft: #17212a;
+            --panel-alt: #1b2631;
+            --line: #2a3947;
+            --text: #eef5fb;
+            --muted: #94a8ba;
+            --accent: #d7b56d;
+            --accent-soft: rgba(215,181,109,.16);
+            --tech: #73c2df;
+            --tech-soft: rgba(115,194,223,.15);
+            --danger: #e58686;
+            --danger-soft: rgba(229,134,134,.14);
+            --success: #84d09a;
+            --success-soft: rgba(132,208,154,.14);
+            --shadow: 0 16px 42px rgba(0,0,0,.28);
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: "Segoe UI", system-ui, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at top left, rgba(215,181,109,.1), transparent 20%),
+                radial-gradient(circle at bottom right, rgba(115,194,223,.08), transparent 24%),
+                linear-gradient(180deg, #0b1014, #0f151c 62%, #0a0f14);
+        }
+        a { color: inherit; text-decoration: none; }
+        .wrap { width: min(1480px, calc(100% - 28px)); margin: 22px auto 36px; }
+        .hero, .toolbar, .panel, .request-form {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 22px;
+            box-shadow: var(--shadow);
+        }
+        .hero { padding: 24px; }
+        h1 { margin: 0 0 8px; font-size: clamp(30px, 4vw, 44px); }
+        .subtitle { margin: 0; color: var(--muted); line-height: 1.6; max-width: 980px; }
+        .topbar { display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin-top: 18px; }
+        .nav { display: flex; gap: 10px; flex-wrap: wrap; }
+        .nav a {
+            padding: 11px 15px;
+            border-radius: 12px;
+            border: 1px solid var(--line);
+            background: var(--panel-soft);
+            color: var(--muted);
+            transition: .18s ease;
+        }
+        .nav a.active {
+            background: var(--accent-soft);
+            border-color: rgba(215,181,109,.42);
+            color: #f7e7b8;
+            font-weight: 700;
+        }
+        .session-box { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+        .session-user, .flash {
+            padding: 10px 12px;
+            border-radius: 12px;
+            background: var(--panel-soft);
+            border: 1px solid var(--line);
+            color: var(--muted);
+            font-size: 13px;
+        }
+        .session-user b { color: var(--text); }
+        .action-link, button {
+            padding: 11px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(215,181,109,.34);
+            background: var(--accent-soft);
+            color: #f7e7b8;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-top: 18px;
+        }
+        .stat {
+            padding: 14px 16px;
+            border-radius: 16px;
+            background: var(--panel-soft);
+            border: 1px solid rgba(255,255,255,.04);
+        }
+        .stat span { color: var(--muted); font-size: 13px; }
+        .stat b { display: block; margin-top: 6px; font-size: 22px; }
+        .toolbar { margin-top: 18px; padding: 14px; }
+        .toolbar form, .request-form form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        input, select, textarea {
+            border-radius: 12px;
+            padding: 12px 14px;
+            font-size: 14px;
+            border: 1px solid var(--line);
+            background: var(--panel-soft);
+            color: var(--text);
+            outline: none;
+        }
+        textarea { min-height: 108px; resize: vertical; width: 100%; }
+        input, select { min-width: 170px; }
+        .hint { margin-top: 10px; color: var(--muted); font-size: 13px; line-height: 1.5; }
+        .grid { display: grid; gap: 18px; margin-top: 18px; }
+        .request-grid {
+            display: grid;
+            grid-template-columns: minmax(320px, 420px) 1fr;
+            gap: 18px;
+            margin-top: 18px;
+        }
+        .request-form { padding: 18px; }
+        .request-form h3 { margin: 0 0 8px; }
+        .panel-head { padding: 18px 20px; border-bottom: 1px solid var(--line); }
+        .panel-head h2 { margin: 0; font-size: 20px; }
+        .panel-head p { margin: 6px 0 0; color: var(--muted); font-size: 13px; }
+        .logs { max-height: 74vh; overflow: auto; padding: 14px; }
+        .entry {
+            padding: 16px;
+            border-radius: 18px;
+            background: linear-gradient(180deg, #17202a, #121922);
+            border: 1px solid #263442;
+            margin-bottom: 12px;
+        }
+        .entry:last-child { margin-bottom: 0; }
+        .meta, .people {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .people {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 10px;
+        }
+        .chip {
+            padding: 5px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            border: 1px solid #304051;
+            background: #1b2530;
+            color: #d7e0e9;
+        }
+        .chip.tech {
+            color: #d3f6ff;
+            background: var(--tech-soft);
+            border-color: rgba(115,194,223,.4);
+        }
+        .chip.admin {
+            color: #f7e7b8;
+            background: var(--accent-soft);
+            border-color: rgba(215,181,109,.36);
+        }
+        .chip.success { color: #d9ffe3; background: var(--success-soft); border-color: rgba(132,208,154,.4); }
+        .chip.danger { color: #ffd7d7; background: var(--danger-soft); border-color: rgba(229,134,134,.4); }
+        .person {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 14px;
+            background: #121921;
+            border: 1px solid #24313f;
+        }
+        .person-main { min-width: 0; }
+        .person-name { font-size: 14px; font-weight: 700; }
+        .person-sub { margin-top: 4px; color: var(--muted); font-size: 12px; }
+        .log-text { white-space: pre-wrap; word-break: break-word; line-height: 1.58; }
+        .empty, .denied {
+            padding: 24px;
+            border-radius: 16px;
+            background: #141b22;
+            border: 1px dashed #334253;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+        .denied { color: #ffd3d3; border-color: rgba(229,134,134,.35); }
+        .flash.success { color: #dfffe7; border-color: rgba(132,208,154,.4); background: var(--success-soft); }
+        @media (max-width: 980px) {
+            .request-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <section class="hero">
+            <h1>ADMIN MANAGER</h1>
+            <p class="subtitle">{{ page_description }}</p>
+
+            <div class="topbar">
+                <div class="nav">
+                    <a class="{{ 'active' if stats.page == 'bananalogs' else '' }}" href="/bananalogs?limit={{ stats.limit }}">Banana Logs</a>
+                    <a class="{{ 'active' if stats.page == 'economy' else '' }}" href="/economy?limit={{ stats.limit }}">Логи экономики</a>
+                    <a class="{{ 'active' if stats.page == 'botlogs' else '' }}" href="/botlogs?limit={{ stats.limit }}">Логи бота</a>
+                    <a class="{{ 'active' if stats.page == 'exchangelogs' else '' }}" href="/exchangelogs?limit={{ stats.limit }}">Логи обменов</a>
+                    <a class="{{ 'active' if stats.page == 'requests' else '' }}" href="/requests?limit={{ stats.limit }}">Формы</a>
+                </div>
+
+                <div class="session-box">
+                    {% if admin.session_user %}
+                        <div class="session-user">
+                            Вошли как:
+                            <a href="{{ admin.session_user.vk_url }}" target="_blank" rel="noopener noreferrer"><b>{{ admin.session_user.name }}</b></a>
+                            · {{ admin.session_user.role_label }}
+                        </div>
+                        <a class="action-link" href="/auth/logout">Выйти</a>
+                    {% elif admin.vk_login_ready %}
+                        <a class="action-link" href="/auth/vk/start">Войти через VK</a>
+                    {% else %}
+                        <div class="session-user">Для входа через VK укажите реальный <b>application_id</b> в config.json.</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="stats">
+                <div class="stat">
+                    <span>Статус базы</span>
+                    <b>{{ 'Подключена' if stats.db_exists else 'Не найдена' }}</b>
+                </div>
+                <div class="stat">
+                    <span>Лимит выдачи</span>
+                    <b>{{ stats.limit }}</b>
+                </div>
+                <div class="stat">
+                    <span>Раздел</span>
+                    <b>{{ page_title }}</b>
+                </div>
+                <div class="stat">
+                    <span>Фильтр</span>
+                    <b>{{ stats.user_filter or stats.status_filter or '—' }}</b>
+                </div>
+            </div>
+        </section>
+
+        <section class="toolbar">
+            <form method="get">
+                {% if stats.page != 'requests' %}
+                    <input type="number" name="user_id" placeholder="Фильтр по user_id" value="{{ stats.user_filter or '' }}">
+                {% else %}
+                    <select name="status">
+                        <option value="open" {{ 'selected' if stats.status_filter == 'open' else '' }}>Только открытые</option>
+                        <option value="done" {{ 'selected' if stats.status_filter == 'done' else '' }}>Только закрытые</option>
+                        <option value="all" {{ 'selected' if stats.status_filter == 'all' else '' }}>Все статусы</option>
+                    </select>
+                {% endif %}
+                <input type="number" name="limit" placeholder="Лимит" value="{{ stats.limit }}">
+                <button type="submit">Обновить</button>
+            </form>
+            {% if stats.page != 'economy' %}
+                <div class="hint">Доступ к разделу есть только у глобальных технических ролей, директора бота и разработчиков. Вход выполняется через VK.</div>
+            {% endif %}
+        </section>
+
+        {% if stats.page == 'requests' and not access_denied %}
+            <section class="request-grid">
+                <aside class="request-form">
+                    <h3>Создать форму</h3>
+                    <p class="hint">Используйте форму для заявок на обнуление, возврат и другие действия. Заявка сохранится в базе и будет видна в разделе форм.</p>
+                    {% if request.args.get('created') == '1' %}
+                        <div class="flash success">Форма успешно создана.</div>
+                    {% endif %}
+                    <form method="post" action="/requests/create">
+                        <input type="number" name="target_id" placeholder="ID пользователя" required>
+                        <select name="action_type" required>
+                            {% for value, label in request_types %}
+                                <option value="{{ value }}">{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                        <input type="number" name="amount" placeholder="Сумма / количество (если нужно)">
+                        <textarea name="details" placeholder="Комментарий, причина, ссылка на доказательства или пояснение"></textarea>
+                        <button type="submit">Создать форму</button>
+                    </form>
+                </aside>
+
+                <article class="panel">
+                    <div class="panel-head">
+                        <h2>{{ page_title }}</h2>
+                        <p>{{ page_description }}</p>
+                    </div>
+                    <div class="logs">
+                        {% if request_rows %}
+                            {% for row in request_rows %}
+                                <div class="entry">
+                                    <div class="meta">
+                                        <span class="chip">Форма #{{ row.id }}</span>
+                                        <span class="chip {{ 'success' if row.status == 'done' else 'danger' if row.status == 'rejected' else 'admin' }}">{{ row.status }}</span>
+                                        <span class="chip">Тип: {{ row.action_type }}</span>
+                                        <span class="chip">Дата: {{ row.created_at }}</span>
+                                    </div>
+                                    <div class="people">
+                                        <div class="person">
+                                            <div class="person-main">
+                                                <a class="person-name" href="{{ row.requester.vk_url }}" target="_blank" rel="noopener noreferrer">{{ row.requester.name }}</a>
+                                                <div class="person-sub">Автор · {{ row.requester.subtitle }}</div>
+                                            </div>
+                                            <span class="chip {{ 'tech' if row.requester.role_type == 'tech' else 'admin' if row.requester.role != 'Пользователь' else '' }}">{{ row.requester.role }}</span>
+                                        </div>
+                                        <div class="person">
+                                            <div class="person-main">
+                                                <a class="person-name" href="{{ row.target.vk_url }}" target="_blank" rel="noopener noreferrer">{{ row.target.name }}</a>
+                                                <div class="person-sub">Цель · {{ row.target.subtitle }}</div>
+                                            </div>
+                                            <span class="chip {{ 'tech' if row.target.role_type == 'tech' else 'admin' if row.target.role != 'Пользователь' else '' }}">{{ row.target.role }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="log-text">Сумма: {{ row.amount if row.amount is not none else '—' }}
+
+Комментарий: {{ row.details or '—' }}
+
+Проверяющий: {{ row.reviewer.name if row.reviewer.id else '—' }}
+Решение: {{ row.resolution_note or '—' }}</div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="empty">Формы пока не созданы.</div>
+                        {% endif %}
+                    </div>
+                </article>
+            </section>
+        {% else %}
+            <section class="grid">
+                <article class="panel">
+                    <div class="panel-head">
+                        <h2>{{ page_title }}</h2>
+                        <p>{{ page_description }}</p>
+                    </div>
+                    <div class="logs">
+                        {% if access_denied %}
+                            <div class="denied">{{ denied_text }}</div>
+                        {% elif rows %}
+                            {% for row in rows %}
+                                <div class="entry">
+                                    <div class="meta">
+                                        <span class="chip">Запись #{{ row.rowid }}</span>
+                                        <span class="chip">{{ value_label }}: {{ row.value if row.value is not none else '—' }}</span>
+                                        <span class="chip">Дата: {{ row.created_label }}</span>
+                                    </div>
+                                    <div class="people">
+                                        <div class="person">
+                                            <div class="person-main">
+                                                {% if row.actor.vk_url %}
+                                                    <a class="person-name" href="{{ row.actor.vk_url }}" target="_blank" rel="noopener noreferrer">{{ row.actor.name }}</a>
+                                                {% else %}
+                                                    <div class="person-name">{{ row.actor.name }}</div>
+                                                {% endif %}
+                                                <div class="person-sub">{{ row.actor.subtitle }}</div>
+                                            </div>
+                                            <span class="chip {{ 'tech' if row.actor.role_type == 'tech' else 'admin' if row.actor.role != 'Пользователь' else '' }}">{{ row.actor.role }}</span>
+                                        </div>
+
+                                        <div class="person">
+                                            <div class="person-main">
+                                                {% if row.target.vk_url %}
+                                                    <a class="person-name" href="{{ row.target.vk_url }}" target="_blank" rel="noopener noreferrer">{{ row.target.name }}</a>
+                                                {% else %}
+                                                    <div class="person-name">{{ row.target.name }}</div>
+                                                {% endif %}
+                                                <div class="person-sub">{{ row.target.subtitle }}</div>
+                                            </div>
+                                            <span class="chip {{ 'tech' if row.target.role_type == 'tech' else 'admin' if row.target.role != 'Пользователь' else '' }}">{{ row.target.role }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="log-text">{{ row.log or '—' }}</div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="empty">Записей в этом разделе пока нет.</div>
+                        {% endif %}
+                    </div>
+                </article>
+            </section>
+        {% endif %}
+    </div>
+</body>
+</html>

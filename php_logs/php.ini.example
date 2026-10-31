@@ -1,0 +1,6 @@
+; PHP configuration for BANANA MANAGER Logs
+; Required extensions: pdo_pgsql, json, session
+extension=pdo_pgsql
+extension=pgsql
+extension=json
+extension=session

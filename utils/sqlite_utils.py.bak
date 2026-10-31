@@ -1,0 +1,17 @@
+﻿import asyncio
+import aiosqlite
+
+DB_PATH = "database.db"
+DB_WRITE_LOCK = asyncio.Lock()
+
+
+async def configure_sqlite(db) -> None:
+    await db.execute("PRAGMA journal_mode=WAL")
+    await db.execute("PRAGMA synchronous=NORMAL")
+    await db.execute("PRAGMA busy_timeout=30000")
+
+
+async def connect_sqlite():
+    db = await aiosqlite.connect(DB_PATH, timeout=30)
+    await configure_sqlite(db)
+    return db

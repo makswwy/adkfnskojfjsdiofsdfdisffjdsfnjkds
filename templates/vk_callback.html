@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Вход через VK</title>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            background: #0f141a;
+            color: #edf3f8;
+            font-family: "Segoe UI", system-ui, sans-serif;
+        }
+        .box {
+            width: min(520px, calc(100% - 32px));
+            padding: 24px;
+            border-radius: 18px;
+            border: 1px solid #293544;
+            background: #171e26;
+            box-shadow: 0 18px 40px rgba(0,0,0,.26);
+        }
+        h1 { margin: 0 0 10px; font-size: 24px; }
+        p { margin: 0; color: #96a7b7; line-height: 1.55; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>Вход через VK</h1>
+        <p id="status">Завершаем авторизацию...</p>
+    </div>
+    <script>
+        const statusEl = document.getElementById("status");
+        const hash = new URLSearchParams(window.location.hash.slice(1));
+        const accessToken = hash.get("access_token");
+
+        if (!accessToken) {
+            statusEl.textContent = "Не удалось получить access_token от VK.";
+        } else {
+            fetch("/auth/vk/session", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({access_token: accessToken})
+            })
+            .then(async (response) => {
+                const data = await response.json();
+                if (!response.ok || !data.ok) {
+                    throw new Error(data.error || "Ошибка авторизации");
+                }
+                statusEl.textContent = "Авторизация успешна. Перенаправляем...";
+                window.location.replace("/economy");
+            })
+            .catch((error) => {
+                statusEl.textContent = "Ошибка авторизации: " + error.message;
+            });
+        }
+    </script>
+</body>
+</html>
