@@ -1,0 +1,5 @@
+PS C:\Users\user\Desktop\bananamanager> & c:/python314/python.exe c:/Users/user/Desktop/bananamanager/main.py
+  File "c:\Users\user\Desktop\bananamanager\main.py", line 20368
+    form_msg += f"👤 Цель: [id{draft['target_user_id']}|{draft['target_user_name']}]\n"
+IndentationError: unexpected indent
+PS C:\Users\user\Desktop\bananamanager> 

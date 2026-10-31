@@ -1,0 +1,537 @@
+command_stats: |
+ Информация о $(user):
+ Роль: $(role)
+ Блокировок: $(bans)
+ Общая блокировка в чатах: $(gban)
+ Общая блокировка в беседах игроков: $(gbanpl)
+ Активные предупреждения: $(warns)
+ Блокировка чата: $(mute)
+ Ник: $(nickname)
+ Всего сообщений: $(messages)
+ Последнее сообщение: $(last_message)
+
+command_info_not: |
+ В данной беседе еще не установлена инормация!
+ 
+ Новую информацию может установить владелец беседы, командой - «/setinfo»
+ 
+command_info: |
+ $(info) 
+ 
+command_other: |
+ /приз — получить ежедневный бонус
+ /баланс — посмотреть свой баланс
+ /дуэль — сыграть дуэль
+ /передать — передать монеты другому пользователю
+ /топ — топ самых богатых пользователей
+ /положить — положить деньги в банк
+ /снять — снять деньги с банка
+ /благо — отправить монеты в благотворительность
+ /топблаго — топ отправителей монет в благотворительность
+ /buyvip — купить вип статус
+ /промо — получить бонус
+ /открытьдепозит — открыть депозит (для вип)
+ /закрытьдепозит — закрыть депозит (для вип)
+ /казино — игра в казино на ставку
+ /promo — активировать определенный промо-код
+ /promolist — список активированных промо-кодов 
+ 
+command_rules_not: |
+ В данной беседе ещё не установлены правила!
+ 
+ Новый правила может установить владелец беседы, командой - «/setrules»
+
+command_rules: |
+ $(rules)
+ 
+command_infobot: |
+ Официальные ресурсы бота:
+
+ Разработчик бота/Владелец - https://vk.ru/makswwy
+
+ Разработчик бота/Владелец - https://vk.ru/letsgggoo
+
+ Техническая поддержка - https://vk.me/join/gS5nTYKLKvVyrcmIkBylrkTCVVCLZtZCf9w=
+ Беседа дуэлей - https://vk.me/join/Bp/rS5GCao5gcWOOKtuX/qA7Uc4x0acv78g=
+ Формы на глобальную блокировку - https://vk.me/join/OuYg9/aZJxJdh/8hTaNzoqk543xct/EUk1g=
+ 
+# сообщество 
+command_getid_group: |
+ Оригинальная ссылка $(target):
+ $(link)
+ 
+# пользователь
+command_getid_user: |
+ Оригинальная ссылка $(target):
+ $(link)
+ 
+command_q: |
+ $(user), вышел(-а) из конференции!
+
+# ============ основной цикл
+
+select_user: Укажите пользователя!
+
+not_preminisionss: Недостаточно прав!
+
+set_role_preminisionss: |
+ Вы не можете выдать роль данному пользователю!
+ 
+# ============
+
+command_setnick_preminissions: |
+ Вы не можете установить ник данному пользователю!
+ 
+command_setnick_nick: |
+ Укажите новый никнейм!
+ 
+command_setnick: |
+ $(user), установил(-а) новый ник $(target).
+ Новый ник: $(nick)
+ 
+command_removenick_premminisions: |
+ Вы не можете удалить ник данному пользователю!
+ 
+command_removenick: |
+ $(user), удалил(-а) ник $(target)
+ 
+command_getnick_not: |
+ У данного пользователя нет ника!
+ 
+command_getacc_params: |
+ Укажите ник для поиска!
+ 
+command_getacc_not: |
+ Указаный вами ник не кому не пренадлежит!
+ 
+command_kick_preminisionss: |
+ Вы не можете исключить данного пользователя!
+ 
+command_kick_not: |
+ Я не могу исключить данного $(target), необходимо забрать администратора (звездочку) или пользователя нет в беседе.
+ 
+command_kick: |
+ $(user), исключил(-а) $(target)
+ 
+command_kick_reason: |
+ $(user), исключил(-а) $(target).
+ Причина: $(reason)
+ 
+command_warn_preminisionss: | 
+ Вы не можете выдать варн данному пользователю!
+
+command_warn_select_reason: |
+ Вы не указали причину предупреждения!
+ 
+command_warn: |
+ $(user), выдал(-а) предупреждение $(target).
+ Причина: $(reason)
+ Предупреждений у пользователя: $(warns)
+ 
+
+command_warn_end: |
+ $(user), был(-а) исключен(-а) за максимальное количество предупреждений 3/3
+ 
+command_unwarn_preminisionss: |
+ Вы не можете снять предупреждение данному пользователю!
+ 
+command_warn_null: |
+ У данного $(user) нет активных предупреждений!
+ 
+command_unwarn: |
+ $(user), снял(-а) предупреждение с $(target) итого, у пользователя: $(warns) предупреждение(-й)
+ 
+command_getwarn: |
+ $(user), информация о активных предупреждениях $(target):
+ 
+ $(info)
+ 
+command_warnlist: |
+ $(user), список пользователей с предупреждениями:
+ 
+ $(info)
+ 
+command_staff: |
+ Владелец беседы -- $(owner)
+ 
+ Спец. администраторы:
+ $(sa)
+ 
+ Зам. спец администратора:
+ $(zsa)
+ 
+ Старшие администраторы:
+ $(sadm)
+ 
+ Администраторы:
+ $(adm)
+ 
+ Старшие модераторы:
+ $(smod)
+ 
+ Модераторы:
+ $(moders)
+ 
+command_mute_params: |
+ Укажите аргументы команды!
+ 
+command_mute_preminisionss: |
+ Вы не можете выдать мут данному пользователю!
+ 
+command_mute_alyready: |
+ Пользователь уже замучен!
+ 
+command_mute_not_reason: |
+ Вы не указали причину!
+ 
+command_mute_time: |
+ Укажите время в минутах!
+ 
+command_mute: |
+ $(user), замутил(-а) $(target).
+ Причина: $(reason)
+ Мут выдан до: $(time_mute)
+ 
+command_unmute_preminisionss: |
+ Вы не можете снять мут данному пользователю!
+ 
+command_unmute_no: |
+ У данного пользователя нет мута!
+ 
+command_unmute: |
+ $(user), размутил(-а) $(target)
+ 
+command_getmute: |
+ Информация о муте $(target):
+ 
+ $(info)
+ 
+command_mutelist: |
+ $(user), список пользователей с мутом:
+ 
+ $(info)
+ 
+command_clear_preminisionss: |
+ Вы не можете очистить сообщения от данного пользователя!
+ 
+command_clear: |
+ $(user), очистил(-а) сообщения от $(target)
+ 
+command_getban: |
+ Информация о блокировках $(target):
+ 
+ $(gbans)
+ 
+ $(banschats)
+ 
+command_chatid: |
+ Оригинальный айди чата в боте: $(id)
+ 
+command_ban_preminisionss: |
+ Вы не можете заблокировать данного пользователя!
+ 
+command_ban_not_reason: |
+ Вы не указали причину блокировки!
+ 
+command_ban_alyready: |
+ Пользователь уже заблокирован!
+ 
+command_ban: |
+ $(user), заблокировал(-а) $(target).
+ Причина: $(reason)
+ 
+command_unban_preminisionss: |
+ Вы не можете разблокировать данного пользователя! Его заблокировал человек с более высокой ролью.
+ 
+command_unban_not: |
+ Пользователь не заблокирован!
+ 
+command_unban: |
+ $(user), разблокировал(-а) $(target)
+ 
+command_addmoder: |
+ $(user) изменил(-а) роль на модератора $(target)
+ 
+command_removerole_preminisionss: |
+ Вы не можете снять роль данному пользователю!
+ 
+command_removerole: |
+ $(user), снял(-а) роль $(target)
+ 
+command_zov_not_reason: Вы не указали причину вызова!
+
+command_zov: |
+ Вы были вызваны $(user)
+ 
+ $(zov_users)
+ 
+ Причина вызова: $(reason)
+ 
+command_ozov_not_reason: Вы не указали причину вызова!
+
+command_ozov: |
+ Вы были вызваны $(user)
+ 
+ $(info)
+ 
+ Причина вызова: $(reason)
+ 
+command_onlinelist: |
+ $(user), список пользователей онлайн:
+ 
+ $(info)
+ 
+ Всего онлайн: $(count)
+ 
+command_banlist: |
+ $(user), список заблокированых пользователей:
+ 
+ $(info)
+ 
+ Всего заблокированых: $(count)
+ 
+command_inactivelist: |
+ Список неактивных пользователей:
+ 
+ [Более дня]:
+ $(day)
+ 
+ [Более недели]:
+ $(week)
+ 
+command_quiet_on: |
+ $(user), включил(-а) режим тишины!
+ 
+command_quiet_off: |
+ $(user), выключил(-а) режим тишины!
+ 
+command_addsenmoder: |
+ $(user), изменил(-а) роль на старшего модератора $(target)
+ 
+command_rnickall: |
+ $(user), очистил(-а) все ники в беседе!
+ 
+command_addadmin: |
+ $(user), изменил(-а) роль на администратора $(target)
+ 
+command_serverinfo: |
+ Информация о сервере:
+ Номер сервера: $(server)
+ Всего бесед в сервере: $(count_chats)
+ Список бесед:
+ $(info)
+ 
+command_filter_off: |
+ $(user), выключил(-а) фильтр запрещенных слов!
+ 
+command_filter_on: |
+ $(user), включил(-а) фильтр запрещенных слов!
+ 
+command_bug_min_params: |
+ Минимальная длина бага 5 символов!
+ 
+command_bug: |
+ Спасибо за обращение, ваш баг-репорт был передан разработчику!
+ 
+command_report_reason: |
+ Укажите причину жалобы!
+ 
+command_report: |
+ $(user), подал(-а) жалобу на $(target).
+ Причина: $(reason)
+ 
+command_addsenadmin: |
+ $(user), изменил(-а) роль на старшего администратора $(target)
+ 
+command_sync: |
+ Синхронизация с базой данных произошла успешно!
+ 
+command_title_params: |
+ Укажите новое название беседы!
+ 
+command_title_error: |
+ Произошла ошибка при смене названия: $(error)
+ 
+command_title: |
+ Название чата изменено успешно, на:
+ « $(title) »
+ 
+command_pin_replay: |
+ Команду нужно использовать ответом на сообщение, которое вы хотите закрепить!
+ 
+command_pin_error: |
+ Произошла ошибка при закреплении сообщения: $(error)
+ 
+command_pin: |
+ Сообщение успешно закреплено!
+
+command_unpin_error: |
+ Произошла ошибка при закреплении сообщения: $(error)
+ 
+command_unpin: |
+ Сообщение успешно открепленно!
+ 
+command_addzsa: |
+ $(user), изменил(-а) роль на заместителя специального администратора $(target)
+ 
+command_server_params: |
+ Укажите номер сервера. 0 - удалить сервер!
+ 
+command_server_number: |
+ Номер сервера должен быть числом!
+ 
+command_server_un: |
+ Беседа отвязана от сервера!
+ 
+command_server_alyready: |
+ Беседа уже привязана к серверу $(server)!
+ 
+command_server: |
+ Вы привязали беседу к серверу: «$(server)»
+ 
+command_settings: |
+ Настройки чата:
+ Название чата: $(chat_title)
+ Владелец чата: $(owner)
+ Тип беседы: $(type)
+ Айди чата: $(chat_id)
+ Сервер: $(server)
+ Исключение при выходе: $(leave)
+ Анти-флуд: $(antiflood)
+ Приглашение от модератора+: $(invite)
+ Фильтр запрещенных слов: $(filter)
+
+command_clearwarns_no_users: |
+ Нет наказаний которые можно очистить!
+ 
+command_clearwarns: |
+ $(user) очистил(-а) $(count) варнов в беседе!
+ 
+command_antisliv: |
+ $(info)
+ 
+command_addsa: |
+ $(user), изменил(-а) роль на специального администратора $(target)
+ 
+command_antiflood_off: |
+ $(user), выключил(-а) режим антифлуда
+ 
+command_antiflood_on: |
+ $(user), включил(-а) режим антифлуда
+ 
+command_welcometext_params: |
+ Укажите текст приветствия, или напишите «off»
+ 
+ Активный текст: $(wtext)
+ 
+ «%u» - заменяется на @id пользователя
+ «%n» - заменяется на тег с именем пользователя
+ «%i» - заменяется на @id пригласившего
+ «%p» - заменяется на тег с именем пригласившего
+ 
+command_welcometext: |
+ $(user), изменил(-а) текст приветствия в беседе!
+ 
+command_invite_on: |
+ Вы включили режим приглашения модераторами в беседу!
+ 
+command_invite_off: |
+ Вы выключили режим приглашения модераторами в беседу!
+ 
+command_leave_on: |
+ Вы включили систему исключения при выходе!
+ 
+command_leave_off: |
+ Вы включили систему исключения при выходе!
+ 
+command_amnesty: |
+ $(user), произвел(-а) амнистию в беседе.
+ 
+ Итог:
+ $(result)
+ 
+command_gsync_alyready: |
+ Беседа уже находиться в глобальной связке!
+ 
+command_gsync: |
+ Вы привязали беседу к глобальной связке.
+ 
+command_gunsync_none_privazka: |
+ Беседа не привязана к глобальной связке!
+ 
+command_gunsync: |
+ Вы отвязали беседу от глобальной связки!
+ 
+command_masskick: |
+ Вы исключили всех участников в беседе без ролей!
+ 
+command_setinfo: |
+ $(user), установил(-а) новую информацию в беседу:
+ 
+ $(text)
+ 
+command_setrules: |
+ $(user), установил(-а) новые правила в беседу:
+ 
+ $(text)
+ 
+command_settype: |
+ Вы установили новый тип беседы: $(type)
+ 
+commabd_protection_on: |
+ Вы включили режим защиты от стороних сообществ!
+ 
+command_protection_off: |
+ Вы выключили режим защиты от стороних сообществ!
+ 
+command_settingsmute_on: |
+ Вы включили систему выдачи варнов в муте!
+ 
+command_settingsmute_off: |
+ Вы выключили систему выдачи варнов в муте!
+ 
+command_editowner_confirm: |
+ Используйте: /editowner https://vk.ru/id1 confirm 
+ 
+command_editowner: |
+ $(user), передал(-а) права владельца чата $(target)
+ 
+chat_is_blocked: |
+ Владелец беседы -- не член, BANANA MANAGER! Я не буду здесь работать.
+
+mute_is_banwords: |
+ $(user), вы получили мут на 30 минут за написание запрещенных слов!
+
+mute_is_warn: |
+ $(user), вы получили варн за написание слов в муте!
+
+ Итого у вас предупреждений: $(warns)
+
+limit_warns_kick: |
+ $(user), был исключен за максимальное количество предупреждений 3/3!
+
+not_this_kick: |
+ Не удалось исключить $(user), необходимо забрать у пользователя звезду!
+
+not_this_started: |
+ Активируйте беседу командой: «/start»
+
+not_this_admin: |
+ Ожидаю выдачи звёздочки (администратора), что бы продолжить работу с чатом!
+ 
+command_getacc_params: |
+ Укажите ник!
+ 
+command_setinfo_params: |
+ Укажите текст!
+ 
+command_gsinfo_none: |
+ Беседа не находиться в глобальной связке
+command_deleteall_preminisionss: |
+ Вы не можете удалить сообщения данного пользователя!
+
+command_deleteall_no_messages: |
+ У данного пользователя не найдено последних сообщений для удаления!
+
+command_deleteall: |
+ $(user), удалил(-а) последние сообщения $(target)
